@@ -1,0 +1,73 @@
+#! /bin/sh -
+#show all files or sub directory of enter directory
+
+set +x
+
+#check argument
+if [ $# -lt 2 ]
+then
+	echo "usage: $0 -f or -d <directory>"
+	exit 1
+fi
+
+para2=$2
+#show file informatin
+showfile()
+{
+	echo "show file of <$para2> directory: "
+	echo
+
+	if [ ! -d $para2 ]
+	then
+		echo "your enter $para2 is not a directory"
+	else
+#		dirpwd=$PWD
+		cd $para2
+		echo $PWD
+		for var in *
+		do
+			if [ -f $var ]
+			then
+				ls -l $var
+			fi	
+		done
+#		cd $dirpwd
+	fi
+}
+
+#show diretory information
+showdir()
+{
+	echo "show subdirectory of <$para2> directory: "
+	echo
+	
+	if [ ! -d $para2 ]
+	then
+		echo "your enter $para2 is not a directory"
+	else
+#		dirpwd=$PWD
+		cd $para2
+		echo $PWD
+		for var in *
+		do
+			if [ -d $var ]
+			then
+				ls -l  | grep "$var"
+			fi
+		done
+#		cd $dirpwd
+	fi	
+}
+
+#get cmd options
+while getopts fd OPTION
+do
+	case $OPTION in
+		f) showfile;;
+		d) showdir;;
+		*) echo "option is not valid"	
+	esac
+done
+
+set +x
+
